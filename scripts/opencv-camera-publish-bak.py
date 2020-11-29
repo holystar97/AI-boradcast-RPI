@@ -9,8 +9,6 @@ from imutils import opencv2matplotlib
 from imutils.video import VideoStream
 from mqtt import get_mqtt_client
 from PIL import Image
-import paho.mqtt.subscribe as subscribe
-from bluetooth import *
 
 CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
 CONFIG = get_config(CONFIG_FILE_PATH)
@@ -22,8 +20,7 @@ MQTT_QOS = CONFIG["mqtt"]["QOS"]
 MQTT_TOPIC_CAMERA = CONFIG["camera"]["mqtt_topic"]
 VIDEO_SOURCE = CONFIG["camera"]["video_source"]
 FPS = CONFIG["camera"]["fps"]
-#client_socket = BluetoothSocket(RFCOMM)
-#client_socket.connect(("98:D3:31:F6:48:D0", 1))
+
 
 def main():
     client = get_mqtt_client()
@@ -45,10 +42,7 @@ def main():
         now = get_now_string()
         print(f"published frame on topic: {MQTT_TOPIC_CAMERA} at {now}")
         time.sleep(1 / FPS)
-        msg = subscribe.simple("x_pos", hostname=MQTT_BROKER)
-        print("%s %s" % (msg.topic, msg.payload))
-       # client_socket.send(msg.payload)  
-        time.sleep(2)
+
 
 if __name__ == "__main__":
     main()
